@@ -17,12 +17,12 @@ import {
    ========================================================================= */
 
 const STATUS = {
-  pago: { label: "Pago", color: "#2F9E63", bg: "#E7F5EC" },
-  pendente: { label: "Pendente", color: "#B8862E", bg: "#FBF2DF" },
-  vence_hoje: { label: "Vence hoje", color: "#C96A2E", bg: "#FBEADF" },
-  atrasado: { label: "Atrasado", color: "#C24141", bg: "#FBE4E4" },
-  pausada: { label: "Pausada", color: "#7A7A73", bg: "#EFEFEA" },
-  encerrado: { label: "Encerrado", color: "#54524A", bg: "#E7E6E0" },
+  pago: { label: "Pago", color: "#16A34A", bg: "#DCFCE7" },
+  pendente: { label: "Pendente", color: "#CA8A04", bg: "#FEF9C3" },
+  vence_hoje: { label: "Vence hoje", color: "#F97316", bg: "#FFF1E6" },
+  atrasado: { label: "Atrasado", color: "#DC2626", bg: "#FEE2E2" },
+  pausada: { label: "Pausada", color: "#6B7280", bg: "#F3F4F6" },
+  encerrado: { label: "Encerrado", color: "#374151", bg: "#E5E7EB" },
 };
 
 const STATUS_FILTER_OPTIONS = [
@@ -484,8 +484,8 @@ function LoginScreen({ onEntrar }) {
   return (
     <div className="aed-login-wrap">
       <div className="aed-login-card">
-        <div className="aed-brand-mark aed-brand-mark--lg">AD</div>
-        <h1>Agência em Dia</h1>
+        <div className="aed-brand-title">Pontua<span className="aed-brand-dot">.</span></div>
+        <span className="aed-brand-sub">Organize. Lembre. Receba.</span>
         <p className="aed-login-sub">Entre com seu nome e telefone. Se for a primeira vez, sua conta é criada automaticamente e seus clientes ficam separados dos de outras pessoas.</p>
         <form onSubmit={handleSubmit} className="aed-form">
           <label className="aed-field">
@@ -501,6 +501,7 @@ function LoginScreen({ onEntrar }) {
             {loading ? "Entrando…" : "Entrar"}
           </button>
         </form>
+        <p className="aed-signature">Uma solução da Marketing Improvável.</p>
       </div>
     </div>
   );
@@ -801,10 +802,9 @@ export default function App() {
     <div className="aed-root">
       <div className={`aed-sidebar ${menuOpen ? "aed-sidebar--open" : ""}`}>
         <div className="aed-brand">
-          <div className="aed-brand-mark">AD</div>
           <div>
-            <div className="aed-brand-title">Agência em Dia</div>
-            <div className="aed-brand-sub">Controle de pagamentos</div>
+            <div className="aed-brand-title">Pontua<span className="aed-brand-dot">.</span></div>
+            <div className="aed-brand-sub">Organize. Lembre. Receba.</div>
           </div>
         </div>
         <nav className="aed-nav">
@@ -825,6 +825,7 @@ export default function App() {
           <span className="aed-sidebar-user-name">{perfilNome}</span>
           <button className="aed-icon-btn" title="Sair" onClick={handleLogout}><LogOut size={16} /></button>
         </div>
+        <p className="aed-signature">Uma solução da Marketing Improvável.</p>
       </div>
 
       {menuOpen && <div className="aed-scrim" onClick={() => setMenuOpen(false)} />}

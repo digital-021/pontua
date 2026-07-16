@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 /* Reset básico para o projeto Vite (substitui o index.css padrão) */
 * {
@@ -14,16 +14,18 @@ body {
 }
 
 .aed-root {
-  --ink: #16211D;
-  --ink-soft: #5B5F55;
-  --paper: #F6F4EE;
+  --ink: #111827;
+  --ink-soft: #6B7280;
+  --paper: #F3F4F6;
   --paper-card: #FFFFFF;
-  --line: #E4E1D6;
-  --brand: #234E43;
-  --brand-dark: #16332B;
-  --brand-soft: #E4ECE8;
-  --accent: #B8862E;
-  --radius: 10px;
+  --line: #E5E7EB;
+  --brand: #F97316;
+  --brand-hover: #EA580C;
+  --brand-dark: #172033;
+  --brand-soft: #FFF1E6;
+  --danger: #DC2626;
+  --success: #16A34A;
+  --radius: 12px;
   font-family: 'Inter', system-ui, sans-serif;
   color: var(--ink);
   background: var(--paper);
@@ -34,36 +36,34 @@ body {
 }
 .aed-root *, .aed-root *::before, .aed-root *::after { box-sizing: border-box; }
 .aed-root button, .aed-root input, .aed-root select, .aed-root textarea { font-family: inherit; font-size: 0.92rem; }
-.aed-root h1, .aed-root h2, .aed-root h3, .aed-root h4 { font-family: 'Fraunces', serif; margin: 0; color: var(--ink); }
+.aed-root h1, .aed-root h2, .aed-root h3, .aed-root h4 { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; margin: 0; color: var(--ink); }
 
 .aed-sidebar {
-  width: 240px; flex-shrink: 0; background: var(--brand-dark); color: #F2F0E6;
+  width: 240px; flex-shrink: 0; background: var(--brand-dark); color: #E5E7EB;
   display: flex; flex-direction: column; gap: 18px; padding: 20px 16px; position: sticky; top: 0; height: 100vh;
 }
 .aed-brand { display: flex; align-items: center; gap: 10px; padding: 4px 4px 12px; border-bottom: 1px solid rgba(255,255,255,0.12); }
-.aed-brand-mark {
-  width: 36px; height: 36px; border-radius: 8px; background: var(--accent); color: var(--brand-dark);
-  font-family: 'Fraunces', serif; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
-}
-.aed-brand-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1rem; line-height: 1.2; }
-.aed-brand-sub { font-size: 0.72rem; color: rgba(242,240,230,0.65); }
+.aed-brand-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 1.35rem; line-height: 1.2; color: #fff; }
+.aed-brand-dot { color: var(--brand); }
+.aed-brand-sub { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.01em; color: var(--brand); margin-top: 2px; }
 
 .aed-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
 .aed-nav-item {
   display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; border: none;
-  background: transparent; color: rgba(242,240,230,0.82); cursor: pointer; text-align: left; transition: background 0.15s ease;
+  border-left: 3px solid transparent;
+  background: transparent; color: rgba(229,231,235,0.82); cursor: pointer; text-align: left; transition: background 0.15s ease;
 }
 .aed-nav-item:hover { background: rgba(255,255,255,0.08); }
-.aed-nav-item--active { background: rgba(255,255,255,0.14); color: #fff; font-weight: 600; }
+.aed-nav-item--active { background: rgba(255,255,255,0.08); color: #fff; font-weight: 600; border-left-color: var(--brand); }
 
 .aed-scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 40; display: none; }
 
 .aed-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .aed-topbar {
-  display: flex; align-items: center; gap: 10px; padding: 16px 24px; background: var(--paper);
+  display: flex; align-items: center; gap: 10px; padding: 16px 24px; background: var(--paper-card);
   border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10;
 }
-.aed-topbar-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.15rem; }
+.aed-topbar-title { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 1.15rem; }
 .aed-content { padding: 24px; flex: 1; }
 .aed-view { display: flex; flex-direction: column; gap: 22px; max-width: 1180px; }
 
@@ -73,26 +73,26 @@ body {
 .aed-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
 .aed-stat {
   background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 16px; display: flex; align-items: flex-start; gap: 12px;
+  padding: 16px; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 1px 2px rgba(17,24,39,0.05);
 }
 .aed-stat-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: var(--brand-soft); color: var(--brand); flex-shrink: 0; }
-.aed-stat--pago .aed-stat-icon { background: #E7F5EC; color: #2F9E63; }
-.aed-stat--pendente .aed-stat-icon { background: #FBF2DF; color: #B8862E; }
-.aed-stat--atrasado .aed-stat-icon { background: #FBE4E4; color: #C24141; }
-.aed-stat-value { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 1.18rem; line-height: 1.2; }
+.aed-stat--pago .aed-stat-icon { background: #DCFCE7; color: #16A34A; }
+.aed-stat--pendente .aed-stat-icon { background: #FEF9C3; color: #CA8A04; }
+.aed-stat--atrasado .aed-stat-icon { background: #FEE2E2; color: #DC2626; }
+.aed-stat-value { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 1.18rem; line-height: 1.2; color: var(--ink); }
 .aed-stat-label { font-size: 0.78rem; color: var(--ink-soft); margin-top: 2px; }
 
-.aed-today-panel { border: 1.5px solid var(--accent); background: #FBF6EC; }
+.aed-today-panel { border: 1.5px solid var(--brand); background: var(--brand-soft); }
 .aed-today-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .aed-today-title { display: flex; align-items: center; gap: 8px; color: var(--brand-dark); }
-.aed-today-count { background: var(--accent); color: #fff; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.78rem; padding: 2px 9px; border-radius: 999px; }
+.aed-today-count { background: var(--brand); color: #fff; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.78rem; padding: 2px 9px; border-radius: 999px; }
 .aed-today-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.aed-today-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 10px; border-bottom: 1px dashed rgba(184,134,46,0.35); flex-wrap: wrap; }
+.aed-today-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 10px; border-bottom: 1px dashed rgba(249,115,22,0.3); flex-wrap: wrap; }
 .aed-today-item:last-child { border-bottom: none; padding-bottom: 0; }
 
 .aed-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-.aed-panel { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
-.aed-panel-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+.aed-panel { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; box-shadow: 0 1px 2px rgba(17,24,39,0.05); }
+.aed-panel-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; color: var(--ink); }
 .aed-mini-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .aed-mini-list li { display: flex; justify-content: space-between; gap: 10px; font-size: 0.86rem; padding-bottom: 8px; border-bottom: 1px dashed var(--line); }
 .aed-mini-list li:last-child { border-bottom: none; padding-bottom: 0; }
@@ -103,31 +103,32 @@ body {
 .aed-search { display: flex; align-items: center; gap: 8px; background: var(--paper-card); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; flex: 1; min-width: 200px; color: var(--ink-soft); }
 .aed-search input { border: none; outline: none; background: transparent; flex: 1; color: var(--ink); }
 
-.aed-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-card); }
+.aed-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-card); box-shadow: 0 1px 2px rgba(17,24,39,0.05); }
 .aed-table { width: 100%; border-collapse: collapse; min-width: 720px; }
-.aed-table th { text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); padding: 12px 14px; border-bottom: 1px solid var(--line); background: #FBFAF6; }
+.aed-table th { text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); padding: 12px 14px; border-bottom: 1px solid var(--line); background: #F9FAFB; }
 .aed-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); font-size: 0.88rem; vertical-align: middle; }
 .aed-table tr:last-child td { border-bottom: none; }
+.aed-table tbody tr:hover { background: var(--paper); }
 .aed-th-actions { text-align: right; }
-.aed-cell-title { font-weight: 600; }
+.aed-cell-title { font-weight: 600; color: var(--ink); }
 .aed-cell-sub { font-size: 0.78rem; color: var(--ink-soft); }
 .aed-cell-prazo { white-space: nowrap; }
 .aed-mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
-.aed-mono--danger { color: #C24141; }
+.aed-mono--danger { color: var(--danger); }
 
 .aed-row-actions { display: flex; gap: 4px; justify-content: flex-end; }
 .aed-row-actions--block { justify-content: flex-start; margin-top: 10px; flex-wrap: wrap; }
 
 .aed-cards { display: flex; flex-direction: column; gap: 12px; }
-.aed-client-card { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+.aed-client-card { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; box-shadow: 0 1px 2px rgba(17,24,39,0.05); }
 .aed-client-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 .aed-client-card-info { display: flex; justify-content: space-between; font-size: 0.84rem; color: var(--ink-soft); margin-top: 8px; }
 
 .aed-stamp {
-  display: inline-block; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.66rem;
-  letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 9px; border-radius: 4px;
-  border: 1.5px solid var(--stamp-color); color: var(--stamp-color); background: var(--stamp-bg);
-  transform: rotate(-1.4deg); white-space: nowrap;
+  display: inline-block; font-family: 'Inter', system-ui, sans-serif; font-weight: 600; font-size: 0.68rem;
+  letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid var(--stamp-color); color: var(--stamp-color); background: var(--stamp-bg);
+  white-space: nowrap;
 }
 
 .aed-icon-btn {
@@ -135,47 +136,47 @@ body {
   color: var(--ink-soft); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s ease;
 }
 .aed-icon-btn:hover { background: var(--brand-soft); color: var(--brand); border-color: var(--brand); }
-.aed-icon-btn--danger:hover { background: #FBE4E4; color: #C24141; border-color: #C24141; }
+.aed-icon-btn--danger:hover { background: #FEE2E2; color: var(--danger); border-color: var(--danger); }
 
 .aed-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px;
   border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-weight: 600; font-size: 0.88rem; transition: all 0.15s ease;
 }
 .aed-btn--primary { background: var(--brand); color: #fff; }
-.aed-btn--primary:hover { background: var(--brand-dark); }
-.aed-btn--ghost { background: transparent; border-color: var(--line); color: var(--ink); }
-.aed-btn--ghost:hover { background: var(--brand-soft); border-color: var(--brand); }
-.aed-btn--danger { background: #C24141; color: #fff; }
-.aed-btn--danger:hover { background: #A63333; }
+.aed-btn--primary:hover { background: var(--brand-hover); }
+.aed-btn--ghost { background: #fff; border-color: var(--line); color: var(--ink); }
+.aed-btn--ghost:hover { background: var(--paper); border-color: #D1D5DB; }
+.aed-btn--danger { background: var(--danger); color: #fff; }
+.aed-btn--danger:hover { background: #B91C1C; }
 .aed-btn--block { width: 100%; }
 .aed-file-btn { cursor: pointer; }
 
 .aed-hint { display: flex; gap: 10px; align-items: flex-start; background: var(--brand-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; font-size: 0.84rem; color: var(--brand-dark); }
-.aed-hint code { background: rgba(255,255,255,0.6); padding: 1px 5px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; }
+.aed-hint code { background: rgba(255,255,255,0.7); padding: 1px 5px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; }
 
 .aed-templates { display: flex; flex-direction: column; gap: 16px; }
 
 .aed-data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
-.aed-data-card { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 8px; color: var(--brand); }
+.aed-data-card { background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 8px; color: var(--brand); box-shadow: 0 1px 2px rgba(17,24,39,0.05); }
 .aed-data-card h4 { font-size: 0.98rem; color: var(--ink); }
 .aed-data-card p { font-size: 0.83rem; color: var(--ink-soft); margin: 0 0 8px; flex: 1; }
 
 .aed-empty { display: flex; align-items: center; gap: 10px; padding: 30px; justify-content: center; color: var(--ink-soft); background: var(--paper-card); border: 1px dashed var(--line); border-radius: var(--radius); }
 
-.aed-field { display: flex; flex-direction: column; gap: 5px; font-size: 0.82rem; color: var(--ink-soft); font-weight: 500; }
+.aed-field { display: flex; flex-direction: column; gap: 5px; font-size: 0.82rem; color: var(--ink); font-weight: 500; }
 .aed-field input, .aed-field select, .aed-field textarea {
-  border: 1px solid var(--line); border-radius: 7px; padding: 9px 10px; color: var(--ink); background: var(--paper-card); font-family: inherit;
+  border: 1px solid #D1D5DB; border-radius: 7px; padding: 9px 10px; color: var(--ink); background: var(--paper-card); font-family: inherit;
 }
 .aed-field input:focus, .aed-field select:focus, .aed-field textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
 .aed-form { display: flex; flex-direction: column; gap: 14px; }
-.aed-form-error { background: #FBE4E4; color: #A63333; border: 1px solid #E3B3B3; border-radius: 8px; padding: 9px 12px; font-size: 0.83rem; margin: 0; }
+.aed-form-error { background: #FEE2E2; color: #B91C1C; border: 1px solid #FCA5A5; border-radius: 8px; padding: 9px 12px; font-size: 0.83rem; margin: 0; }
 .aed-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
 
-.aed-overlay { position: fixed; inset: 0; background: rgba(22,33,29,0.45); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
-.aed-modal { background: var(--paper-card); border-radius: 14px; padding: 22px; width: 100%; max-width: 620px; max-height: 90vh; overflow-y: auto; }
+.aed-overlay { position: fixed; inset: 0; background: rgba(17,24,39,0.5); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+.aed-modal { background: var(--paper-card); border-radius: 16px; padding: 22px; width: 100%; max-width: 620px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(17,24,39,0.2); }
 .aed-modal--small { max-width: 400px; }
 .aed-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.aed-modal-title { font-size: 1.1rem; font-weight: 600; }
+.aed-modal-title { font-size: 1.1rem; font-weight: 700; }
 .aed-modal-text { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.5; }
 .aed-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
 
@@ -197,32 +198,31 @@ body {
 .aed-sidebar-user {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   padding: 10px 4px 0; border-top: 1px solid rgba(255,255,255,0.12); margin-top: 4px;
-  color: rgba(242,240,230,0.82); font-size: 0.82rem;
+  color: rgba(229,231,235,0.82); font-size: 0.82rem;
 }
 .aed-sidebar-user-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.aed-sidebar-user .aed-icon-btn { background: transparent; border-color: rgba(255,255,255,0.2); color: rgba(242,240,230,0.82); flex-shrink: 0; }
+.aed-sidebar-user .aed-icon-btn { background: transparent; border-color: rgba(255,255,255,0.2); color: rgba(229,231,235,0.82); flex-shrink: 0; }
 .aed-sidebar-user .aed-icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.35); }
+
+.aed-signature { font-size: 0.68rem; opacity: 0.6; margin: 0; text-align: left; color: var(--ink-soft); }
+.aed-sidebar .aed-signature { color: rgba(229,231,235,0.6); text-align: center; padding-top: 2px; }
 
 .aed-loading-screen {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  font-family: 'Inter', system-ui, sans-serif; color: #5B5F55; background: #F6F4EE;
+  font-family: 'Inter', system-ui, sans-serif; color: #6B7280; background: #F3F4F6;
 }
 
 .aed-login-wrap {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 24px; background: #F6F4EE; font-family: 'Inter', system-ui, sans-serif;
+  padding: 24px; background: #F3F4F6; font-family: 'Inter', system-ui, sans-serif;
 }
 .aed-login-card {
-  background: #FFFFFF; border: 1px solid #E4E1D6; border-radius: 14px;
+  background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px;
   padding: 32px; width: 100%; max-width: 380px; text-align: center;
+  box-shadow: 0 8px 24px rgba(17,24,39,0.08);
 }
-.aed-login-card h1 {
-  font-family: 'Fraunces', serif; font-size: 1.3rem; color: #16211D; margin: 14px 0 8px;
-}
-.aed-login-sub { color: #5B5F55; font-size: 0.88rem; line-height: 1.5; margin: 0 0 20px; }
+.aed-login-card .aed-brand-title { color: #111827; font-size: 1.6rem; }
+.aed-login-card .aed-brand-sub { display: block; margin: 4px 0 16px; }
+.aed-login-sub { color: #6B7280; font-size: 0.88rem; line-height: 1.5; margin: 0 0 20px; }
 .aed-login-card .aed-form { text-align: left; }
-.aed-brand-mark--lg {
-  width: 52px; height: 52px; border-radius: 12px; background: #B8862E; color: #16332B;
-  font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.3rem;
-  display: flex; align-items: center; justify-content: center; margin: 0 auto;
-}
+.aed-login-card .aed-signature { display: block; margin-top: 18px; }
