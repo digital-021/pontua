@@ -1,0 +1,13 @@
+{
+  "name": "Agência em Dia",
+  "short_name": "Agência em Dia",
+  "description": "Controle de pagamentos e cobranças de clientes",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F6F4EE",
+  "theme_color": "#16332B",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
