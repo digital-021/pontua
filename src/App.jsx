@@ -3,9 +3,14 @@ import {
   Plus, Search, Users, Wallet, Clock, AlertTriangle, CheckCircle2,
   MessageCircle, Mail, Pencil, Trash2, Download, Upload,
   X, LayoutDashboard, FileText, Menu, CalendarClock, Banknote,
-  RotateCcw, Info, Copy, BellRing,
+  RotateCcw, Info, Copy, BellRing, LogOut,
 } from "lucide-react";
 import "./index.css";
+import {
+  supabase, LIMITE_CLIENTES, entrarOuCadastrar, sair,
+  buscarPerfil, carregarDados, inserirCliente, atualizarCliente,
+  excluirCliente, inserirHistorico, salvarTemplates,
+} from "./supabaseClient";
 
 /* =========================================================================
    CONSTANTES
@@ -255,57 +260,6 @@ function clientsToCSV(clients) {
   return [headers.map(csvEscape).join(";"), ...rows.map((r) => r.map(csvEscape).join(";"))].join("\n");
 }
 
-function buildDemoClients() {
-  const t = todayDate();
-  return [
-    {
-      id: generateId(), nome: "Marina Costa", empresa: "Studio Marina Costa",
-      whatsapp: "21998765432", email: "marina@studiomc.com.br",
-      servico: "Gestão de redes sociais", valorMensal: 1200,
-      diaVencimento: addDays(t, 20).getDate(), proximoVencimento: toISODate(addDays(t, 20)), frequencia: "mensal",
-      formaPagamento: "Pix", chavePix: "marina@studiomc.com.br",
-      observacoes: "", statusCliente: "ativo", pagoNesteCiclo: true,
-      historico: [{ id: generateId(), data: toISODate(addDays(t, -10)), valor: 1200, status: "pago", dataPagamento: toISODate(addDays(t, -11)), dataLembrete: null, canal: "manual", observacoes: "" }],
-    },
-    {
-      id: generateId(), nome: "Rafael Andrade", empresa: "Andrade Advocacia",
-      whatsapp: "21987654321", email: "rafael@andradeadv.com.br",
-      servico: "Tráfego pago", valorMensal: 1800,
-      diaVencimento: t.getDate(), proximoVencimento: toISODate(t), frequencia: "semanal",
-      formaPagamento: "Boleto", chavePix: "andradeadv.com.br/pagar",
-      observacoes: "Prefere contato após as 14h.", statusCliente: "ativo", pagoNesteCiclo: false,
-      historico: [],
-    },
-    {
-      id: generateId(), nome: "Beatriz Lima", empresa: "Doce Beatriz Confeitaria",
-      whatsapp: "21991234567", email: "beatriz@docebeatriz.com.br",
-      servico: "Criação de conteúdo", valorMensal: 900,
-      diaVencimento: addDays(t, 4).getDate(), proximoVencimento: toISODate(addDays(t, 4)), frequencia: "quinzenal",
-      formaPagamento: "Pix", chavePix: "11.222.333/0001-44",
-      observacoes: "", statusCliente: "ativo", pagoNesteCiclo: false,
-      historico: [{ id: generateId(), data: toISODate(addDays(t, -26)), valor: 900, status: "pago", dataPagamento: toISODate(addDays(t, -27)), dataLembrete: null, canal: "manual", observacoes: "" }],
-    },
-    {
-      id: generateId(), nome: "Carlos Eduardo Souza", empresa: "CES Contabilidade",
-      whatsapp: "21999887766", email: "carlos@cescontabilidade.com.br",
-      servico: "Gestão de site e SEO", valorMensal: 1500,
-      diaVencimento: addDays(t, -6).getDate(), proximoVencimento: toISODate(addDays(t, -6)), frequencia: "mensal",
-      formaPagamento: "Transferência bancária", chavePix: "carlos.souza@cescontabilidade.com.br",
-      observacoes: "Já foi lembrado uma vez por WhatsApp.", statusCliente: "ativo", pagoNesteCiclo: false,
-      historico: [{ id: generateId(), data: toISODate(addDays(t, -6)), valor: 1500, status: "atrasado", dataPagamento: null, dataLembrete: toISODate(addDays(t, -1)), canal: "WhatsApp", observacoes: "" }],
-    },
-    {
-      id: generateId(), nome: "Fernanda Reis", empresa: "Reis Arquitetura",
-      whatsapp: "21993334455", email: "fernanda@reisarquitetura.com.br",
-      servico: "Consultoria de marketing", valorMensal: 2200,
-      diaVencimento: addDays(t, 15).getDate(), proximoVencimento: toISODate(addDays(t, 15)), frequencia: "mensal",
-      formaPagamento: "Pix", chavePix: "fernanda@reisarquitetura.com.br",
-      observacoes: "Contrato pausado a pedido da cliente em obra.", statusCliente: "pausado", pagoNesteCiclo: false,
-      historico: [],
-    },
-  ];
-}
-
 /* =========================================================================
    COMPONENTES DE APOIO
    ========================================================================= */
@@ -508,31 +462,60 @@ function HistoryModal({ client, onClose }) {
   );
 }
 
+function LoginScreen({ onEntrar }) {
+  const [nome, setNome] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      await onEntrar(nome, telefone);
+    } catch (err) {
+      setError("Não foi possível entrar. Confira o nome e o telefone informados.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="aed-login-wrap">
+      <div className="aed-login-card">
+        <div className="aed-brand-mark aed-brand-mark--lg">AD</div>
+        <h1>Agência em Dia</h1>
+        <p className="aed-login-sub">Entre com seu nome e telefone. Se for a primeira vez, sua conta é criada automaticamente e seus clientes ficam separados dos de outras pessoas.</p>
+        <form onSubmit={handleSubmit} className="aed-form">
+          <label className="aed-field">
+            <span>Nome</span>
+            <input required value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Seu nome" />
+          </label>
+          <label className="aed-field">
+            <span>Telefone (com DDD)</span>
+            <input required value={telefone} onChange={(e) => setTelefone(e.target.value)} placeholder="21998765432" inputMode="numeric" />
+          </label>
+          {error && <p className="aed-form-error">{error}</p>}
+          <button type="submit" className="aed-btn aed-btn--primary aed-btn--block" disabled={loading}>
+            {loading ? "Entrando…" : "Entrar"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 /* =========================================================================
    APP PRINCIPAL
    ========================================================================= */
 
-const STORAGE_KEY = "agencia-em-dia-data";
-
-function loadFromStorage() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (err) {
-    console.warn("Não foi possível ler os dados salvos:", err);
-  }
-  return null;
-}
-
 export default function App() {
-  const [clients, setClients] = useState(() => {
-    const saved = loadFromStorage();
-    return saved && Array.isArray(saved.clients) ? saved.clients : buildDemoClients();
-  });
-  const [templates, setTemplates] = useState(() => {
-    const saved = loadFromStorage();
-    return saved && saved.templates ? { ...DEFAULT_TEMPLATES, ...saved.templates } : DEFAULT_TEMPLATES;
-  });
+  const [session, setSession] = useState(undefined); // undefined = verificando, null = deslogado
+  const [perfilNome, setPerfilNome] = useState("");
+  const [dataLoading, setDataLoading] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [templates, setTemplates] = useState(DEFAULT_TEMPLATES);
   const [view, setView] = useState("dashboard");
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -546,17 +529,50 @@ export default function App() {
 
   const today = todayDate();
 
-  // ---- Persistir dados no navegador (localStorage) ----
+  // ---- Sessão de autenticação ----
   useEffect(() => {
-    const id = setTimeout(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, sess) => setSession(sess));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  // ---- Carregar dados do usuário logado a partir do Supabase ----
+  useEffect(() => {
+    if (!session) {
+      setClients([]);
+      setTemplates(DEFAULT_TEMPLATES);
+      setPerfilNome("");
+      return;
+    }
+    let cancelled = false;
+    setDataLoading(true);
+    (async () => {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ clients, templates }));
+        const [perfil, { clientes, templates: tpl }] = await Promise.all([
+          buscarPerfil(session.user.id),
+          carregarDados(session.user.id),
+        ]);
+        if (cancelled) return;
+        setPerfilNome(perfil?.nome || "");
+        setClients(clientes);
+        setTemplates(tpl ? { ...DEFAULT_TEMPLATES, ...tpl } : DEFAULT_TEMPLATES);
       } catch (err) {
-        console.warn("Não foi possível salvar os dados:", err);
+        if (!cancelled) console.warn("Não foi possível carregar seus dados:", err);
+      } finally {
+        if (!cancelled) setDataLoading(false);
       }
-    }, 300);
+    })();
+    return () => { cancelled = true; };
+  }, [session]);
+
+  // ---- Persistir modelos de mensagem no Supabase ----
+  useEffect(() => {
+    if (!session) return;
+    const id = setTimeout(() => {
+      salvarTemplates(templates, session.user.id).catch((err) => console.warn("Não foi possível salvar os modelos:", err));
+    }, 500);
     return () => clearTimeout(id);
-  }, [clients, templates]);
+  }, [templates, session]);
 
   const showToast = useCallback((message) => {
     setToast(message);
@@ -621,48 +637,74 @@ export default function App() {
   }, [clientsWithStatus, clients, today]);
 
   // ---- Handlers ----
-  const saveClient = (data) => {
-    setClients((prev) => {
-      const exists = prev.some((c) => c.id === data.id);
-      if (exists) return prev.map((c) => (c.id === data.id ? { ...c, ...data } : c));
-      return [...prev, data];
-    });
-    setModalClient(null);
-    showToast(clients.some((c) => c.id === data.id) ? "Cliente atualizado." : "Cliente cadastrado.");
+  const saveClient = async (data) => {
+    const isEdit = clients.some((c) => c.id === data.id);
+    if (!isEdit && clients.length >= LIMITE_CLIENTES) {
+      showToast(`Limite de ${LIMITE_CLIENTES} clientes atingido.`);
+      return;
+    }
+    try {
+      if (isEdit) {
+        const updated = await atualizarCliente(data.id, data, session.user.id);
+        setClients((prev) => prev.map((c) => (c.id === data.id ? { ...updated, historico: c.historico } : c)));
+      } else {
+        const created = await inserirCliente(data, session.user.id);
+        setClients((prev) => [...prev, { ...created, historico: [] }]);
+      }
+      setModalClient(null);
+      showToast(isEdit ? "Cliente atualizado." : "Cliente cadastrado.");
+    } catch (err) {
+      showToast("Não foi possível salvar o cliente.");
+    }
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!deleteTarget) return;
-    setClients((prev) => prev.filter((c) => c.id !== deleteTarget.id));
-    setDeleteTarget(null);
-    showToast("Cliente excluído.");
+    try {
+      await excluirCliente(deleteTarget.id);
+      setClients((prev) => prev.filter((c) => c.id !== deleteTarget.id));
+      showToast("Cliente excluído.");
+    } catch (err) {
+      showToast("Não foi possível excluir o cliente.");
+    } finally {
+      setDeleteTarget(null);
+    }
   };
 
-  const markAsPaid = (client) => {
+  const markAsPaid = async (client) => {
     const oldDue = client.proximoVencimento;
     const newDue = toISODate(nextDueDate(parseISODate(oldDue) || todayDate(), client.frequencia));
-    setClients((prev) => prev.map((c) => {
-      if (c.id !== client.id) return c;
-      const entry = {
-        id: generateId(), data: oldDue, valor: c.valorMensal,
-        status: "pago", dataPagamento: toISODate(todayDate()), dataLembrete: null,
-        canal: "manual", observacoes: "",
-      };
-      return { ...c, proximoVencimento: newDue, pagoNesteCiclo: false, historico: [entry, ...(c.historico || [])] };
-    }));
-    showToast(`Pagamento de ${client.nome} registrado. Próxima cobrança: ${formatDateBR(newDue)}.`);
+    try {
+      const updated = await atualizarCliente(client.id, { ...client, proximoVencimento: newDue, pagoNesteCiclo: false }, session.user.id);
+      const entry = await inserirHistorico(
+        { data: oldDue, valor: client.valorMensal, status: "pago", dataPagamento: toISODate(todayDate()), dataLembrete: null, canal: "manual", observacoes: "" },
+        client.id, session.user.id
+      );
+      setClients((prev) => prev.map((c) => (c.id === client.id ? { ...updated, historico: [entry, ...(c.historico || [])] } : c)));
+      showToast(`Pagamento de ${client.nome} registrado. Próxima cobrança: ${formatDateBR(newDue)}.`);
+    } catch (err) {
+      showToast("Não foi possível registrar o pagamento.");
+    }
   };
 
-  const logReminder = (clientId, canal, key) => {
-    setClients((prev) => prev.map((c) => {
-      if (c.id !== clientId) return c;
-      const entry = {
-        id: generateId(), data: c.proximoVencimento, valor: c.valorMensal,
-        status: key === "confirmacao" ? "pago" : (diffInDays(today, parseISODate(c.proximoVencimento) || today) < 0 ? "atrasado" : "pendente"),
-        dataPagamento: null, dataLembrete: toISODate(todayDate()), canal, observacoes: "",
-      };
-      return { ...c, historico: [entry, ...(c.historico || [])] };
-    }));
+  const logReminder = async (clientId, canal, key) => {
+    const client = clients.find((c) => c.id === clientId);
+    if (!client) return;
+    const status = key === "confirmacao" ? "pago" : (diffInDays(today, parseISODate(client.proximoVencimento) || today) < 0 ? "atrasado" : "pendente");
+    try {
+      const entry = await inserirHistorico(
+        { data: client.proximoVencimento, valor: client.valorMensal, status, dataPagamento: null, dataLembrete: toISODate(todayDate()), canal, observacoes: "" },
+        clientId, session.user.id
+      );
+      setClients((prev) => prev.map((c) => (c.id === clientId ? { ...c, historico: [entry, ...(c.historico || [])] } : c)));
+    } catch (err) {
+      console.warn("Não foi possível registrar o lembrete:", err);
+    }
+  };
+
+  const handleLogout = async () => {
+    await sair();
+    setView("dashboard");
   };
 
   const sendWhatsApp = (client) => {
@@ -703,20 +745,27 @@ export default function App() {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const parsed = JSON.parse(String(reader.result));
         if (!Array.isArray(parsed.clients)) throw new Error("formato inválido");
-        const normalized = parsed.clients.map((c) => ({
-          ...EMPTY_CLIENT,
-          pagoNesteCiclo: false,
-          historico: [],
-          ...c,
-          id: c.id || generateId(),
-        }));
-        setClients(normalized);
+        const excedeu = parsed.clients.length > LIMITE_CLIENTES;
+        const aImportar = parsed.clients.slice(0, LIMITE_CLIENTES).map((c) => ({ ...EMPTY_CLIENT, ...c }));
+
+        for (const c of clients) await excluirCliente(c.id);
+
+        const novos = [];
+        for (const c of aImportar) {
+          const criado = await inserirCliente(c, session.user.id);
+          const historico = [];
+          for (const h of (c.historico || [])) {
+            historico.push(await inserirHistorico(h, criado.id, session.user.id));
+          }
+          novos.push({ ...criado, historico });
+        }
+        setClients(novos);
         if (parsed.templates) setTemplates({ ...DEFAULT_TEMPLATES, ...parsed.templates });
-        showToast("Backup importado com sucesso.");
+        showToast(excedeu ? `Arquivo tinha mais de ${LIMITE_CLIENTES} clientes; apenas os primeiros ${LIMITE_CLIENTES} foram importados.` : "Backup importado com sucesso.");
       } catch (err) {
         showToast("Não foi possível importar este arquivo.");
       } finally {
@@ -735,6 +784,18 @@ export default function App() {
     { key: "modelos", label: "Modelos de mensagem", icon: <FileText size={18} /> },
     { key: "dados", label: "Backup e dados", icon: <Download size={18} /> },
   ];
+
+  if (session === undefined) {
+    return <div className="aed-loading-screen">Carregando…</div>;
+  }
+
+  if (!session) {
+    return <LoginScreen onEntrar={entrarOuCadastrar} />;
+  }
+
+  if (dataLoading && clients.length === 0) {
+    return <div className="aed-loading-screen">Carregando seus dados…</div>;
+  }
 
   return (
     <div className="aed-root">
@@ -760,6 +821,10 @@ export default function App() {
         <button className="aed-btn aed-btn--primary aed-btn--block" onClick={() => { setModalClient({ ...EMPTY_CLIENT }); setMenuOpen(false); }}>
           <Plus size={16} /> Novo cliente
         </button>
+        <div className="aed-sidebar-user">
+          <span className="aed-sidebar-user-name">{perfilNome}</span>
+          <button className="aed-icon-btn" title="Sair" onClick={handleLogout}><LogOut size={16} /></button>
+        </div>
       </div>
 
       {menuOpen && <div className="aed-scrim" onClick={() => setMenuOpen(false)} />}

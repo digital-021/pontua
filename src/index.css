@@ -193,3 +193,36 @@ body {
   .aed-content { padding: 16px; }
   .aed-topbar { padding: 14px 16px; }
 }
+
+.aed-sidebar-user {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 10px 4px 0; border-top: 1px solid rgba(255,255,255,0.12); margin-top: 4px;
+  color: rgba(242,240,230,0.82); font-size: 0.82rem;
+}
+.aed-sidebar-user-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aed-sidebar-user .aed-icon-btn { background: transparent; border-color: rgba(255,255,255,0.2); color: rgba(242,240,230,0.82); flex-shrink: 0; }
+.aed-sidebar-user .aed-icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.35); }
+
+.aed-loading-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif; color: #5B5F55; background: #F6F4EE;
+}
+
+.aed-login-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: #F6F4EE; font-family: 'Inter', system-ui, sans-serif;
+}
+.aed-login-card {
+  background: #FFFFFF; border: 1px solid #E4E1D6; border-radius: 14px;
+  padding: 32px; width: 100%; max-width: 380px; text-align: center;
+}
+.aed-login-card h1 {
+  font-family: 'Fraunces', serif; font-size: 1.3rem; color: #16211D; margin: 14px 0 8px;
+}
+.aed-login-sub { color: #5B5F55; font-size: 0.88rem; line-height: 1.5; margin: 0 0 20px; }
+.aed-login-card .aed-form { text-align: left; }
+.aed-brand-mark--lg {
+  width: 52px; height: 52px; border-radius: 12px; background: #B8862E; color: #16332B;
+  font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.3rem;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto;
+}
