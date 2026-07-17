@@ -502,6 +502,11 @@ function LoginScreen({ onEntrar }) {
           </button>
         </form>
         <p className="aed-signature">Uma solução da Marketing Improvável.</p>
+        <p className="aed-signature aed-signature-links">
+          <a href="privacidade.html" target="_blank" rel="noopener noreferrer">Privacidade</a>
+          {" · "}
+          <a href="termos.html" target="_blank" rel="noopener noreferrer">Termos de Uso</a>
+        </p>
       </div>
     </div>
   );
@@ -826,6 +831,11 @@ export default function App() {
           <button className="aed-icon-btn" title="Sair" onClick={handleLogout}><LogOut size={16} /></button>
         </div>
         <p className="aed-signature">Uma solução da Marketing Improvável.</p>
+        <p className="aed-signature aed-signature-links">
+          <a href="privacidade.html" target="_blank" rel="noopener noreferrer">Privacidade</a>
+          {" · "}
+          <a href="termos.html" target="_blank" rel="noopener noreferrer">Termos de Uso</a>
+        </p>
       </div>
 
       {menuOpen && <div className="aed-scrim" onClick={() => setMenuOpen(false)} />}

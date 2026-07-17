@@ -206,6 +206,9 @@ body {
 
 .aed-signature { font-size: 0.68rem; opacity: 0.6; margin: 0; text-align: left; color: var(--ink-soft); }
 .aed-sidebar .aed-signature { color: rgba(229,231,235,0.6); text-align: center; padding-top: 2px; }
+.aed-signature-links { margin-top: 2px; }
+.aed-signature-links a { color: inherit; text-decoration: none; }
+.aed-signature-links a:hover { text-decoration: underline; }
 
 .aed-loading-screen {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
